@@ -101,9 +101,12 @@ class AnsiColorscheme {
 
   /// Converts an extended ANSI color code (0-255) into a Flutter `Color`.
   Color _extendedColor(int colorCode) {
-    if (colorCode < 16) {
-      // Basic ANSI colors (0-15)
-      return _bgMapping(colorCode);
+    if (colorCode < 8) {
+      // Basic ANSI colors (0-7)
+      return _fgMapping(colorCode + 30);
+    } else if (colorCode < 16) {
+      // Basic ANSI colors (8-15)
+      return _fgMapping(colorCode - 8 + 90);
     } else if (colorCode < 232) {
       // 6x6x6 color cube (216 colors)
       final code = colorCode - 16;

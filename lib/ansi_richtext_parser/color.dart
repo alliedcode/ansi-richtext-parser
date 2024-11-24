@@ -1,19 +1,18 @@
 class AnsiColor {
-  int fgColor;
-  int? bgColor;
+  final int? fgColor;
+  final int? bgColor;
+  final bool isFgExtended;
+  final bool isBgExtended;
 
-  AnsiColor(this.fgColor, {this.bgColor});
-
-  @override
-  String toString() => 'AnsiColor{fgColor: $fgColor, bgColor: $bgColor}';
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AnsiColor &&
-          fgColor == other.fgColor &&
-          bgColor == other.bgColor;
+  AnsiColor({this.fgColor, this.bgColor, this.isFgExtended = false, this.isBgExtended = false});
 
   @override
-  int get hashCode => fgColor.hashCode + bgColor.hashCode;
+  String toString() => 'AnsiColor{fgColor: $fgColor, bgColor: $bgColor, isFgExtended: $isFgExtended, isBgExtended: $isBgExtended}';
+
+  @override
+  bool operator ==(Object o) =>
+      identical(this, o) || o is AnsiColor && fgColor == o.fgColor && bgColor == o.bgColor && isFgExtended == o.isFgExtended && isBgExtended == o.isBgExtended;
+
+  @override
+  int get hashCode => fgColor.hashCode + bgColor.hashCode + isFgExtended.hashCode + isBgExtended.hashCode;
 }

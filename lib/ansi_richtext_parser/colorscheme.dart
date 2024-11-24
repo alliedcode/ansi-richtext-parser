@@ -82,14 +82,44 @@ class AnsiColorscheme {
         _ => null,
       };
 
-  Color? color(final AnsiColor ansiColor) => _fgMapping(ansiColor.fgColor);
-  Color? backgroundColor(final AnsiColor ansiColor) =>
-      _bgMapping(ansiColor.bgColor ?? 0);
+  Color? color(final AnsiColor ansiColor) => ansiColor.fgColor == null
+      ? null
+      : ansiColor.isFgExtended
+          ? _extendedColor(ansiColor.fgColor!)
+          : _fgMapping(ansiColor.fgColor!);
+
+  Color? backgroundColor(final AnsiColor ansiColor) => ansiColor.bgColor == null
+      ? null
+      : ansiColor.isBgExtended
+          ? _extendedColor(ansiColor.bgColor!)
+          : _bgMapping(ansiColor.bgColor!);
 
   TextStyle textStyle(final AnsiColor ansiColor) => TextStyle(
         color: color(ansiColor),
         backgroundColor: backgroundColor(ansiColor),
       );
+
+  /// Converts an extended ANSI color code (0-255) into a Flutter `Color`.
+  Color _extendedColor(int colorCode) {
+    if (colorCode < 16) {
+      // Basic ANSI colors (0-15)
+      return _bgMapping(colorCode);
+    } else if (colorCode < 232) {
+      // 6x6x6 color cube (216 colors)
+      final code = colorCode - 16;
+      final r = (code ~/ 36) % 6 * 51;
+      final g = (code ~/ 6) % 6 * 51;
+      final b = code % 6 * 51;
+      return Color.fromARGB(255, r, g, b);
+    } else if (colorCode < 256) {
+      // Grayscale (24 shades)
+      final gray = (colorCode - 232) * 10 + 8;
+      return Color.fromARGB(255, gray, gray, gray);
+    } else {
+      // Fallback
+      return const Color.fromRGBO(0, 0, 0, 1);
+    }
+  }
 }
 
 // color schemes taken from https://en.wikipedia.org/wiki/ANSI_escape_code#3-bit_and_4-bit
@@ -331,7 +361,7 @@ final _brightWhites = [
   (255, 255, 255),
 ];
 
-Color _toColor(tuple, {int alpha = 1}) {
+Color _toColor(tuple, {int alpha = 255}) {
   var (int r, int g, int b) = tuple;
   return Color.fromARGB(alpha, r, g, b);
 }

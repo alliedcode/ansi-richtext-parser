@@ -42,14 +42,14 @@ void main() {
     final result = parse("\x1B[38;5;196m");
     expect(result is Success, isTrue);
     expect(result.value.length, equals(1));
-    expect(result.value[0], equals(AnsiColor(fgColor: 196))); // Foreground extended color
+    expect(result.value[0], equals(AnsiColor(fgColor: 196, isFgExtended: true))); // Foreground extended color
   });
 
   test('BG extended color (48;5;<n>)', () {
     final result = parse("\x1B[48;5;46m");
     expect(result is Success, isTrue);
     expect(result.value.length, equals(1));
-    expect(result.value[0], equals(AnsiColor(bgColor: 46))); // Background extended color
+    expect(result.value[0], equals(AnsiColor(bgColor: 46, isBgExtended: true))); // Background extended color
   });
 
   test('FG and BG extended colors combined', () {
@@ -58,7 +58,7 @@ void main() {
     expect(result.value.length, equals(1));
     expect(
       result.value[0],
-      equals(AnsiColor(fgColor: 123, bgColor: 210)), // Foreground 123, Background 210
+      equals(AnsiColor(fgColor: 123, bgColor: 210, isFgExtended: true, isBgExtended: true)), // Foreground 123, Background 210
     );
   });
 
@@ -66,9 +66,9 @@ void main() {
     final result = parse("\x1B[38;5;196mHello \x1B[48;5;46mWorld");
     expect(result is Success, isTrue);
     expect(result.value.length, equals(4));
-    expect(result.value[0], equals(AnsiColor(fgColor: 196))); // Foreground extended color
+    expect(result.value[0], equals(AnsiColor(fgColor: 196, isFgExtended: true))); // Foreground extended color
     expect(result.value[1], equals("Hello ")); // First string
-    expect(result.value[2], equals(AnsiColor(bgColor: 46))); // Background extended color
+    expect(result.value[2], equals(AnsiColor(bgColor: 46, isBgExtended: true))); // Background extended color
     expect(result.value[3], equals("World")); // Second string
   });
 
@@ -76,7 +76,7 @@ void main() {
     final result = parse("\x1B[38;5;196mRed\x1B[0mNormal");
     expect(result is Success, isTrue);
     expect(result.value.length, equals(4));
-    expect(result.value[0], equals(AnsiColor(fgColor: 196))); // Foreground extended color
+    expect(result.value[0], equals(AnsiColor(fgColor: 196, isFgExtended: true))); // Foreground extended color
     expect(result.value[1], equals("Red")); // First string
     expect(result.value[2], equals(AnsiColor(fgColor: 0))); // Reset colors
     expect(result.value[3], equals("Normal")); // Second string

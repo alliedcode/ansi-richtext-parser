@@ -7,22 +7,25 @@ class AnsiParser extends GrammarDefinition {
 
   Parser elem() => ref0(color) | ref0(text);
 
-  Parser color() => (ref0(extendedColor) | ref0(basicColor) | ref0(reset))
-      .skip(before: escape(), after: char('m'))
-      .map((values) => AnsiColor(fgColor: values[0], bgColor: values.length > 1 ? values[1] : null));
+  Parser color() => ref0(ansiColor).skip(before: escape(), after: char('m'));
 
   Parser escape() => string('\x1B[');
+  Parser notEscape() => escape().not() & any();
+  Parser text() => ref0(notEscape).plus().flatten();
+
+  Parser ansiColor() => (ref0(extendedAnsiColor) | ref0(basicAnsiColor) | ref0(resetAnsiColor));
 
   /// Parses basic ANSI colors (30-37 or 90-97 foreground, 40-47 or 100-107 background).
-  Parser basicColor() => (fgColor() & bgColor().optional()).map((values) => [values[0], values[1]]);
+  Parser basicAnsiColor() => (fgColor() & bgColor().optional()).map((a) => AnsiColor(fgColor: a[0], bgColor: a[1], isFgExtended: false, isBgExtended: false));
 
   /// Parses extended ANSI colors (38;5;<n> foreground, 48;5;<n> background).
-  Parser extendedColor() =>
-      (fgExtendedColor().skip(after: char(';')) & bgExtendedColor()) |
-      fgExtendedColor().map((value) => [value]) |
-      bgExtendedColor().map((value) => [null, value]);
+  Parser extendedAnsiColor() =>
+      (fgExtendedColor().skip(after: char(';')) & bgExtendedColor())
+          .map((a) => AnsiColor(fgColor: a[0], bgColor: a[1], isFgExtended: true, isBgExtended: true)) |
+      fgExtendedColor().map((value) => AnsiColor(fgColor: value, isFgExtended: true)) |
+      bgExtendedColor().map((value) => AnsiColor(bgColor: value, isBgExtended: true));
 
-  Parser reset() => string('0').map((_) => [0]);
+  Parser resetAnsiColor() => string('0').map((_) => AnsiColor(fgColor: 0));
 
   Parser fgExtendedColor() => ref0(integer).skip(before: string('38;5;'));
   Parser bgExtendedColor() => ref0(integer).skip(before: string('48;5;'));
@@ -31,7 +34,4 @@ class AnsiParser extends GrammarDefinition {
   Parser bgColor() => ref0(integer).skip(before: char(';')).where((value) => value >= 40 && value <= 47 || value >= 100 && value <= 107);
 
   Parser integer() => digit().plus().flatten().map(int.parse);
-
-  Parser notEscape() => escape().not() & any();
-  Parser text() => ref0(notEscape).plus().flatten();
 }

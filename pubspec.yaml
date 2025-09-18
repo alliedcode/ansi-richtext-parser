@@ -1,6 +1,6 @@
 name: ansi_richtext_parser
-description: "A new Flutter package project."
-version: 0.0.1
+description: "A type-safe Flutter package for parsing ANSI escape codes and rendering them as styled Text widgets."
+version: 0.0.3
 # homepage:
 
 environment:

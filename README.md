@@ -1,6 +1,6 @@
 # ANSI Rich Text Parser
 
-[![Tests](https://github.com/nilscc/ansi-richtext-parser/workflows/Flutter%20Tests/badge.svg)](https://github.com/nilscc/ansi-richtext-parser/actions)
+[![Tests](https://github.com/alliedcode/ansi-richtext-parser/workflows/Flutter%20Tests/badge.svg)](https://github.com/alliedcode/ansi-richtext-parser/actions)
 [![Pub](https://img.shields.io/pub/v/ansi_richtext_parser.svg)](https://pub.dev/packages/ansi_richtext_parser)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 

@@ -15,7 +15,8 @@ class TextToken extends ParserToken {
   String toString() => 'TextToken("$text")';
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is TextToken && text == other.text;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is TextToken && text == other.text;
 
   @override
   int get hashCode => text.hashCode;
@@ -31,7 +32,8 @@ class ColorToken extends ParserToken {
   String toString() => 'ColorToken($color)';
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ColorToken && color == other.color;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is ColorToken && color == other.color;
 
   @override
   int get hashCode => color.hashCode;

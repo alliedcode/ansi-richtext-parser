@@ -85,7 +85,8 @@ void main() {
       expect(safeResult.runtimeType, equals(strictResult.runtimeType));
     });
 
-    test('parseSafe returns null while parseStrict throws for invalid input', () {
+    test('parseSafe returns null while parseStrict throws for invalid input',
+        () {
       const invalidInput = "\u001b[invalid";
 
       final safeResult = parseSafe(invalidInput, colorscheme);

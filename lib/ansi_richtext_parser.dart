@@ -16,13 +16,20 @@ import 'package:petitparser/core.dart';
 ) =>
     switch ((current, previous)) {
       // Case: Reset color token
-      (ColorToken(color: AnsiColor(fgColor: 0)), (_, List<InlineSpan> list)) => (null, list),
+      (ColorToken(color: AnsiColor(fgColor: 0)), (_, List<InlineSpan> list)) =>
+        (null, list),
 
       // Case: Color token - apply the style
-      (ColorToken(color: final ansiColor), (_, List<InlineSpan> list)) => (colorscheme.textStyle(ansiColor), list),
+      (ColorToken(color: final ansiColor), (_, List<InlineSpan> list)) => (
+          colorscheme.textStyle(ansiColor),
+          list
+        ),
 
       // Case: Text token - apply the current TextStyle
-      (TextToken(text: final text), (TextStyle? ts, List<InlineSpan> list)) => (ts, list..add(TextSpan(text: text, style: ts))),
+      (TextToken(text: final text), (TextStyle? ts, List<InlineSpan> list)) => (
+          ts,
+          list..add(TextSpan(text: text, style: ts))
+        ),
 
       // Fallback case: Unexpected token
       (final token, _) => throw UnexpectedTokenError(

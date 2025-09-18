@@ -33,7 +33,8 @@ class UnexpectedTokenError extends ParsingError {
 
   @override
   String toString() {
-    final buffer = StringBuffer('UnexpectedTokenError: token "$token" of type ${token.runtimeType}');
+    final buffer = StringBuffer(
+        'UnexpectedTokenError: token "$token" of type ${token.runtimeType}');
     buffer.write(' was encountered but expected $expectedType');
     if (input != null) buffer.write(' in input: "$input"');
     if (position != null) buffer.write(' at position $position');

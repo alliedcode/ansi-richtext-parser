@@ -13,12 +13,14 @@ void main() {
     expect(output?.data, equals(input));
   });
 
-  const rawInput = "\u001b[96m29/\u001b[36m40 | Filter: \u001b[93mrelay | Sort: \u001b[97m~name";
+  const rawInput =
+      "\u001b[96m29/\u001b[36m40 | Filter: \u001b[93mrelay | Sort: \u001b[97m~name";
 
   test("Get plain text, ignore color information", () {
     final output = parseSafe(rawInput, colorscheme);
     expect(output, isNotNull);
-    expect(output!.textSpan?.toPlainText(), equals("29/40 | Filter: relay | Sort: ~name"));
+    expect(output!.textSpan?.toPlainText(),
+        equals("29/40 | Filter: relay | Sort: ~name"));
   });
 
   test("Check created text spans", () {
@@ -30,16 +32,20 @@ void main() {
     // helper for iterating children
     child(idx) => (output.textSpan as TextSpan).children![idx] as TextSpan;
 
-    expect(child(0).style?.color, equals(colorscheme.color(AnsiColor.basic(fgColor: 96))));
+    expect(child(0).style?.color,
+        equals(colorscheme.color(AnsiColor.basic(fgColor: 96))));
     expect(child(0).text, equals("29/"));
 
-    expect(child(1).style?.color, equals(colorscheme.color(AnsiColor.basic(fgColor: 36))));
+    expect(child(1).style?.color,
+        equals(colorscheme.color(AnsiColor.basic(fgColor: 36))));
     expect(child(1).text, equals("40 | Filter: "));
 
-    expect(child(2).style?.color, equals(colorscheme.color(AnsiColor.basic(fgColor: 93))));
+    expect(child(2).style?.color,
+        equals(colorscheme.color(AnsiColor.basic(fgColor: 93))));
     expect(child(2).text, equals("relay | Sort: "));
 
-    expect(child(3).style?.color, equals(colorscheme.color(AnsiColor.basic(fgColor: 97))));
+    expect(child(3).style?.color,
+        equals(colorscheme.color(AnsiColor.basic(fgColor: 97))));
     expect(child(3).text, equals("~name"));
   });
 
@@ -52,7 +58,8 @@ void main() {
 
     child(idx) => (output.textSpan as TextSpan).children![idx] as TextSpan;
 
-    expect(child(0).style?.color, equals(colorscheme.color(AnsiColor.basic(fgColor: 36, bgColor: 46))));
+    expect(child(0).style?.color,
+        equals(colorscheme.color(AnsiColor.basic(fgColor: 36, bgColor: 46))));
     expect(child(0).text, equals("Test"));
 
     expect(child(1).style, isNull);

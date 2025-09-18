@@ -46,7 +46,8 @@ class AnsiColor {
   factory AnsiColor.reset() => const AnsiColor._(fgColor: 0);
 
   /// Legacy constructor for backward compatibility
-  @Deprecated('Use AnsiColor.basic(), AnsiColor.extended(), or AnsiColor.reset() instead')
+  @Deprecated(
+      'Use AnsiColor.basic(), AnsiColor.extended(), or AnsiColor.reset() instead')
   AnsiColor({
     this.fgColor,
     this.bgColor,
@@ -58,12 +59,15 @@ class AnsiColor {
   static void _validateBasicColor(int? color, bool isForeground) {
     if (color == null) return;
 
-    final validRanges = isForeground ? [(30, 37), (90, 97)] : [(40, 47), (100, 107)];
+    final validRanges =
+        isForeground ? [(30, 37), (90, 97)] : [(40, 47), (100, 107)];
 
-    final isValid = validRanges.any((range) => color >= range.$1 && color <= range.$2);
+    final isValid =
+        validRanges.any((range) => color >= range.$1 && color <= range.$2);
 
     if (!isValid) {
-      throw ArgumentError('Invalid basic ${isForeground ? 'foreground' : 'background'} color: $color. '
+      throw ArgumentError(
+          'Invalid basic ${isForeground ? 'foreground' : 'background'} color: $color. '
           'Must be in ranges ${isForeground ? '30-37 or 90-97' : '40-47 or 100-107'}.');
     }
   }
@@ -73,7 +77,8 @@ class AnsiColor {
     if (color == null) return;
 
     if (color < 0 || color > 255) {
-      throw ArgumentError('Invalid extended ${isForeground ? 'foreground' : 'background'} color: $color. '
+      throw ArgumentError(
+          'Invalid extended ${isForeground ? 'foreground' : 'background'} color: $color. '
           'Must be between 0 and 255.');
     }
   }
@@ -88,12 +93,17 @@ class AnsiColor {
   bool get hasBackground => bgColor != null;
 
   @override
-  String toString() => 'AnsiColor{fgColor: $fgColor, bgColor: $bgColor, isFgExtended: $isFgExtended, isBgExtended: $isBgExtended}';
+  String toString() =>
+      'AnsiColor{fgColor: $fgColor, bgColor: $bgColor, isFgExtended: $isFgExtended, isBgExtended: $isBgExtended}';
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AnsiColor && fgColor == other.fgColor && bgColor == other.bgColor && isFgExtended == other.isFgExtended && isBgExtended == other.isBgExtended;
+      other is AnsiColor &&
+          fgColor == other.fgColor &&
+          bgColor == other.bgColor &&
+          isFgExtended == other.isFgExtended &&
+          isBgExtended == other.isBgExtended;
 
   @override
   int get hashCode => Object.hash(fgColor, bgColor, isFgExtended, isBgExtended);

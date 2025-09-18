@@ -127,3 +127,4 @@ Text parseStrict(String ansi, AnsiColorscheme colorscheme) {
 
   return Text.rich(TextSpan(children: spans));
 }
+// Test comment
